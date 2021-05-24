@@ -1,17 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.folio</groupId>
-  <artifactId>aws-test</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>AWS Edge Test</name>
-  <description>Hello world application to test on AWS</description>
-  	<properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.folio</groupId>
+	<artifactId>aws-test</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>AWS Edge Test</name>
+	<description>Hello world application to test on AWS</description>
+	<properties>
 		<vertx.version>3.8.0</vertx.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
 	</properties>
-  <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-core</artifactId>
@@ -53,16 +55,16 @@
 			<version>2.33</version>
 		</dependency>
 	</dependencies>
-	  <repositories>
-    <repository>
-      <id>folio-nexus</id>
-      <name>FOLIO Maven repository</name>
-      <url>https://repository.folio.org/repository/maven-folio</url>
-    </repository>
-  </repositories>
-  <build>
+	<repositories>
+		<repository>
+			<id>folio-nexus</id>
+			<name>FOLIO Maven repository</name>
+			<url>https://repository.folio.org/repository/maven-folio</url>
+		</repository>
+	</repositories>
+	<build>
 		<plugins>
-  <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>2.4</version>
@@ -74,7 +76,8 @@
 						</goals>
 						<configuration>
 							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
 										<addClasspath>true</addClasspath>
 										<Main-Class>io.vertx.core.Launcher</Main-Class>
@@ -88,6 +91,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			</plugins>
-			</build>
+		</plugins>
+	</build>
 </project>
