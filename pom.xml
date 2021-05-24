@@ -83,7 +83,7 @@
 									<manifestEntries>
 										<addClasspath>true</addClasspath>
 										<Main-Class>io.vertx.core.Launcher</Main-Class>
-										<Main-Verticle>org.folio.edge.ncip.MainVerticle</Main-Verticle>
+										<Main-Verticle>test.ms.aws.MainVerticle</Main-Verticle>
 									</manifestEntries>
 								</transformer>
 							</transformers>
@@ -98,8 +98,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.6.0</version>
 				<configuration>
-					<source>11</source>
-					<target>11</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 
