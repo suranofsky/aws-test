@@ -1,0 +1,129 @@
+ AWSTemplateFormatVersion: 2010-09-09
+
+
+ Parameters:
+  EC2InstanceType:
+    Type: String
+  EC2AMI:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+
+ Resources:
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 
+        !Sub 'Internal Security group for ${AWS::StackName}'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8081
+          ToPort: 8081
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      Tags:
+       - Key: Name
+         Value: !Ref AWS::StackName
+
+  InstanceRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Allow
+          Principal:
+            Service:
+             - "ec2.amazonaws.com"
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+         - arn:aws:iam::aws:policy/CloudWatchFullAccess
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  InstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      Roles:
+       - Ref: InstanceRole
+       
+
+  Instance:
+    Type: AWS::EC2::Instance
+    CreationPolicy:
+       ResourceSignal:
+         Timeout: PT5M
+         Count: 1
+    Metadata:
+      AWS::CloudFormation::Init:
+        config:
+          packages:
+            yum:
+              wget: []
+              unzip: []
+              maven: []
+    Properties:
+     ImageId: !Ref EC2AMI
+     InstanceType: !Ref EC2InstanceType
+     IamInstanceProfile: !Ref InstanceProfile
+     Monitoring: true
+     SecurityGroupIds:
+       - !GetAtt SecurityGroup.GroupId
+     UserData:
+      Fn::Base64: !Sub |
+       #!/bin/bash -xe
+
+
+       #send script output to /tmp so we can debug boot failurs
+       exec > /tmp/userdata.log 2>&1
+
+       #Update all packages
+       yum -y update
+       sudo amazon-linux-extras install -y java-openjdk11
+       
+       #get latest cfn scripts:
+       yum install -y aws-cfn-bootstrap
+
+       #Have Cloudformation install any files and packages from the metadata
+       /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
+
+       cat > /tmp/install_script.sh << EOF
+         #START
+         echo "setting up environment"
+         amazon-linux-extras install -y java-openjdk11
+
+         #Download the latest code, unzip it into /home/ex3-user/app
+         wget https://github.com/suranofsky/aws-test/archive/refs/heads/main.zip
+         unzip main.zip
+         mv aws-test-main app
+         cd app
+         mvn package
+         sleep 5
+         #Create log directory
+         mkdir -p /home/ec2-user/app/logs
+
+         #Run the server
+         nohup java -jar target/aws-test-fat.jar &
+       EOF
+
+       chown ec2-user:ec2-user /tmp/install_script.sh && chmod a+x /tmp/install_script.sh
+       sleep 1; su - ec2-user -c "/tmp/install_script.sh"
+
+       #Signal to cloudformation that the instance is ready
+       /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
+     Tags:
+       - Key: Name
+         Value: !Ref AWS::StackName
+ Outputs:
+  InstanceEndpoint:
+    Description: The DNS name for the created instance
+    Value: !Sub "http://${Instance.PublicDnsName}:8081"
+    Export:
+     Name: InstanceEndpoint
+
+
+
+
