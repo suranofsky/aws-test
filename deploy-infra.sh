@@ -21,7 +21,7 @@ aws cloudformation deploy \
 	--stack-name $STACK_NAME-setup \
 	--template-file setup.yml \
 	--no-fail-on-empty-changeset \
-	--capabilities CAPABILITY_NAMED_IAN \
+	--capabilities CAPABILITY_NAMED_IAM \
 	--parameter-overrides \
 	CodePipelineBucket=$CODEPIPELINE_BUCKET
 
