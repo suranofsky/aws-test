@@ -30,7 +30,7 @@
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: 
-        !Sub 'Internal Security group for ${AWS::StackName}'
+        !Sub 'Security group for ${AWS::StackName}'
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 8081
@@ -90,7 +90,7 @@
           commands:
             00-install-cd-agent:
               command: "./install auto"
-              cwd: "/home/ec2-user"
+              cwd: "/home/ec2-user/"
     Properties:
      ImageId: !Ref EC2AMI
      InstanceType: !Ref EC2InstanceType
@@ -114,7 +114,7 @@
        yum install -y aws-cfn-bootstrap
 
        #Have Cloudformation install any files and packages from the metadata
-       /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
+       #/opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
 
        cat > /tmp/install_script.sh << EOF
          #START
@@ -132,11 +132,14 @@
          mkdir -p /home/ec2-user/app/logs
 
          #Run the server
-         nohup java -jar target/aws-test-fat.jar &
+         #nohup java -jar target/aws-test-fat.jar &
        EOF
 
        chown ec2-user:ec2-user /tmp/install_script.sh && chmod a+x /tmp/install_script.sh
        sleep 1; su - ec2-user -c "/tmp/install_script.sh"
+       
+       #Have Cloudformation install any files and packages from the metadata
+       /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
 
        #Signal to cloudformation that the instance is ready
        /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
