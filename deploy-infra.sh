@@ -15,7 +15,7 @@ CODEPIPELINE_BUCKET="$STACK_NAME-$REGION-codepipeline-$AWS_ACCOUNT_ID"
 GH_ACCESS_TOKEN=$(cat ~/.github/aws-bootstrap-access-token)
 GH_OWNER=$(cat ~/.github/aws-bootstrap-owner)
 GH_REPO=$(cat ~/.github/aws-bootstrap-repo)
-GH_BRANCH=master
+GH_BRANCH=main
 
 #Deploys static resources
 echo -e "\n\n================= Deploying setup.yml==========="
