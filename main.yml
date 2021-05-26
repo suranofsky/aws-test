@@ -89,7 +89,7 @@
               mode: "000755"
           commands:
             00-install-cd-agent:
-              command: "./install auto"
+              command: "sudo ./install auto"
               cwd: "/home/ec2-user/"
     Properties:
      ImageId: !Ref EC2AMI
