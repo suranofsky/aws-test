@@ -80,6 +80,7 @@
         config:
           packages:
             yum:
+              ruby: []
               wget: []
               unzip: []
               maven: []
