@@ -108,7 +108,7 @@
 
        #Update all packages
        yum -y update
-       sudo amazon-linux-extras install -y java-openjdk11
+       #sudo amazon-linux-extras install -y java-openjdk11
        
        #get latest cfn scripts:
        yum install -y aws-cfn-bootstrap
@@ -119,7 +119,7 @@
        cat > /tmp/install_script.sh << EOF
          #START
          echo "setting up environment"
-         #amazon-linux-extras install -y java-openjdk11
+         sudo amazon-linux-extras install -y java-openjdk11
 
          #Download the latest code, unzip it into /home/ex3-user/app
          #wget https://github.com/suranofsky/aws-test/archive/refs/heads/main.zip
