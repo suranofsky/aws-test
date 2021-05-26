@@ -129,7 +129,7 @@
 
        #Update all packages
        yum -y update
-       sudo amazon-linux-extras install -y java-openjdk11
+       #sudo amazon-linux-extras install -y java-openjdk11
        
        #get latest cfn scripts:
        yum install -y aws-cfn-bootstrap
@@ -143,12 +143,12 @@
          amazon-linux-extras install -y java-openjdk11
 
          #Download the latest code, unzip it into /home/ex3-user/app
-         wget https://github.com/suranofsky/aws-test/archive/refs/heads/main.zip
-         unzip main.zip
-         mv aws-test-main app
-         cd app
-         mvn package
-         sleep 5
+         #wget https://github.com/suranofsky/aws-test/archive/refs/heads/main.zip
+         #unzip main.zip
+         #mv aws-test-main app
+         #cd app
+         #mvn package
+         #sleep 5
          #Create log directory
          mkdir -p /home/ec2-user/app/logs
 
