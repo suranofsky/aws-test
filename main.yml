@@ -43,7 +43,7 @@
       Tags:
        - Key: Name
          Value: !Ref AWS::StackName
-    InstanceRole:
+  InstanceRole:
     Type: "AWS::IAM::Role"
     Properties:
       AssumeRolePolicyDocument:
