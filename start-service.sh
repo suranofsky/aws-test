@@ -1,5 +1,6 @@
 APPNAME="EDGE APP"
 APPCODE=edge-app
+APPPID=$APPCODE.pid
 
 echo "Starting $APPNAME server ..."
 if [ ! -f $APPPID ]; then
