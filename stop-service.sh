@@ -24,7 +24,6 @@ check_status() {
   pid=$?
 
   if [ $pid -eq 0 ] ; then
-    #echo "Application is already stopped"
     return 0
   fi
 
