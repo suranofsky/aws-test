@@ -1,4 +1,10 @@
 #!/bin/bash
-if [ -f './pid' ]; then
-	    PID=$(cat ./pid) && kill -15 $PID
+ if [ -f $APPPID ]; then
+    PID=$(cat $APPPID);
+    echo "Stopping $APPNAME..."
+    kill $PID;
+    echo "$APPNAME stopped!"
+    rm $APPPID
+else
+    echo "$APPNAME is not running ..."
 fi
