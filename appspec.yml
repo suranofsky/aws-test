@@ -9,9 +9,15 @@
      pattern: "**"
      owner: ec2-user
      group: ec2-user
+   - object: /home/ec2-user/app
+     patern: "*.sh"
+     owner: ec2-user
+     group: ec2-user
  hooks:
+   AfterInstall:
+     - location: set-permissions.sh
    ApplicationStart:
-      - location: start-service.sh
+     - location: start-service.sh
         timeout: 300
         runas: ec2-user
    ApplicationStop:
