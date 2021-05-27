@@ -1,13 +1,12 @@
-#!/bin/bash
+APPNAME="EDGE APP"
+APPCODE=edge-app
 
-PID=1
-if [ -f './pid' ]; then
-	    PID=$(cat ./pid)
-fi
-
-if ps -p $PID > /dev/null
-then
-	   echo "Service with $PID is already running"
-   else
-	       nohup java -jar ./app/target/aws-test-fat.jar > service.out 2> errors.txt < /dev/null & PID=$!; echo $PID > ./pid
+echo "Starting $APPNAME server ..."
+if [ ! -f $APPPID ]; then
+    nohup java -jar  ./app/target/aws-test-fat.jar 2>> /dev/null >> /dev/null &
+    #nohup java -jar ./app/target/aws-test-fat.jar > service.out 2> errors.txt <
+    echo $! > $APPPID
+    echo "$APPNAME started!"
+else
+    echo "$APPNAME is already running ..."
 fi
