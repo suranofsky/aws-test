@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PID=0
+PID=1
 if [ -f './pid' ]; then
 	    PID=$(cat ./pid)
 fi
