@@ -25,7 +25,7 @@ check_status() {
 
   if [ $pid -eq 0 ] ; then
     echo "Application is already stopped"
-    exit 0
+    return
   fi
 
   # Kills the application process
