@@ -1,4 +1,8 @@
 #!/bin/bash
+
+APPNAME="EDGE APP"
+APPCODE=edge-app
+APPPID=$APPCODE.pid
  if [ -f $APPPID ]; then
     PID=$(cat $APPPID);
     echo "Stopping $APPNAME..."
