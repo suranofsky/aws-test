@@ -11,7 +11,7 @@
    group: ec2-user
  hooks:
    ApplicationStart:
-      - location: start-service.sh
+     - location: start-service.sh
         timeout: 300
         runas: ec2-user
    ApplicationStop:
