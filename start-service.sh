@@ -1,20 +1,45 @@
 #!/bin/bash
 
- #Check if the program is running
-is_exist(){
-  pid=`ps -ef|grep $APP_NAME|grep -v grep|awk '{print $2}' `
-     #If there is no return, there is a return of 0.     
-  if [ -z "${pid}" ]; then
-   return 1
-  else
-    return 0
+check_status() {
+
+  # Running ps with some arguments to check if the PID exists
+  # -C : specifies the command name
+  # -o : determines how columns must be displayed
+  # h : hides the data header
+  s=`ps -C 'java -jar ./app/target/aws-test-fat.jar' -o pid h`
+
+  # If somethig was returned by the ps command, this function returns the PID
+  if [ $s ] ; then
+    return $s
   fi
+
+  # In any another case, return 0
+  return 0
+
 }
 
 
-is_exist
-  if [ $? -eq "0" ]; then
-    echo "${APP_NAME} is already running. pid=${pid} ."
-  else
-    nohup java -jar ./app/target/aws-test-fat.jar > /dev/null 2>&1 &
+
+
+# At first checks if the application is already started calling the check_status
+  # function
+  check_status
+
+  # $? is a special variable that hold the "exit status of the most recently executed
+  # foreground pipeline"
+  pid=$?
+
+  if [ $pid -ne 0 ] ; then
+    echo "The application is already started"
+    exit 1
   fi
+
+  # If the application isn't running, starts it
+  echo -n "Starting application: "
+
+  # Redirects default and error output to a log file
+  java -jar ./app/target/aws-test-fat.jar >> /path/to/logfile 2>&1 &
+  echo "OK"
+
+
+
