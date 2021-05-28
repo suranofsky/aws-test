@@ -38,7 +38,7 @@ check_status() {
   echo -n "Starting application: "
 
   # Redirects default and error output to a log file
-  java -jar ./app/target/aws-test-fat.jar >> /path/to/logfile 2>&1 &
+  nohup java -jar ./app/target/aws-test-fat.jar >> /home/ec2-user/app/logs/output.log 2>&1 &
   echo "OK"
 
 
