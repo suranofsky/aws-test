@@ -6,7 +6,7 @@ check_status() {
   # -C : specifies the command name
   # -o : determines how columns must be displayed
   # h : hides the data header
-  s=`ps -C 'java -jar ./app/target/aws-test-fat.jar' -o pid h`
+  s=`ps -C 'java -jar /home/ec2-user/app/target/aws-test-fat.jar' -o pid h`
 
   # If somethig was returned by the ps command, this function returns the PID
   if [ $s ] ; then
@@ -38,7 +38,7 @@ check_status() {
   echo -n "Starting application: "
 
   # Redirects default and error output to a log file
-  nohup java -jar ./app/target/aws-test-fat.jar >> /home/ec2-user/app/logs/output.log 2>&1 &
+  nohup java -jar /home/ec2-user/app/target/aws-test-fat.jar >> /home/ec2-user/app/logs/output.log 2>&1 &
   echo "OK"
 
 
